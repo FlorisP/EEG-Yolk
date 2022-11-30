@@ -1,0 +1,72 @@
+SHARED STORAGE SETUP:
+
+1. download putty
+2. puttygen to generate keypairs
+3. Save public and private key
+4. upload public key to sram.surf.nl
+5. open putty
+6. fill in ip address
+7. go to ssh->auth submenu
+8. fill in private key
+9. go to session tab in putty
+10. create new configuration and save
+
+https://servicedesk.surf.nl/wiki/display/WIKI/Create+a+shared+storage+for+Linux+and+Windows
+
+MOUNT NEW STORAGE:
+
+In putty:
+sudo ufw allow ssh
+sudo ufw allow from [IP of IP object in workspace X] to any port 445
+sudo ufw allow from 145.38.188.225 to any port 445
+sudo ufw enable
+
+In workspace terminal:
+sudo apt-get install cifs-utils
+sudo mkdir /volume-ceph
+
+sudo nano /etc/fstab
+add line:
+//145.38.186.229/volume-ceph /volume-ceph cifs username=smbuser,password=[PASSWORD],file_mode=0777,dir_mode=0777
+
+sudo mount -a
+ln -s /volume-ceph
+
+
+
+INSTALL PACKAGES
+
+pip install -r packages.txt
+
+Add package directory to PATH in kernel.
+For example:
+    export PATH=$PATH:/home/fpauwels/.local/bin    
+    export PATH=$PATH:/home/fpauwels/eegyolk/floris_files
+show path: echo $PATH
+
+
+
+CUDNN INSTALLATION:
+
+Source: https://stackoverflow.com/questions/66977227/could-not-load-dynamic-library-libcudnn-so-8-when-running-tensorflow-on-ubun
+
+The research cloud does not automatically have cuda/cudnn installed. Insert the command lines into a GPU terminal.
+
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
+sudo mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600
+sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/3bf863cc.pub
+sudo add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/ /"
+sudo apt-get update
+sudo apt-get install libcudnn8
+sudo apt-get install libcudnn8-dev
+
+
+COMMANDS:
+
+print working directory: pwd
+change directory: cd ..
+list files: ls
+create shortcut in path: ln -s /volume-ceph/floris_storage
+example: ln -s /home/fpauwels/eegyolk/floris_files
+remove shortcut: rm volume-ceph
+

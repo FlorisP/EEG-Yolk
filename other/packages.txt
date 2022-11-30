@@ -1,0 +1,13 @@
+mne
+tensorflow
+autoreject
+numpy
+pandas
+matplotlib
+sklearn
+scipy
+Wave
+h5io
+tensorflow_addons
+ipywidgets
+ipympl
